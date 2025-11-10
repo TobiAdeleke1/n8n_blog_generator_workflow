@@ -1,0 +1,77 @@
+{
+  "name": "blog_generator",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "xxxxxxx",
+          "mode": "list",
+          "cachedResultName": "blog_generator",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/xxxxxxx"
+        },
+        "event": "folderCreated"
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        -16
+      ],
+      "id": "5e5d1430-f6b9-4715-9d9e-318b5429823c",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "usnw2QKEuJHcLOsd",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        80,
+        -16
+      ],
+      "id": "9d54dd4a-fc25-4a9a-99ec-c5b5e8b4c7c5",
+      "name": "Basic LLM Chain"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "dc0e2a50-2b17-4e04-ac92-3da392ae9853",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bf925e81b6a563ad56f79364300c97c41c841ac4da95716caaf16899c5cc0436"
+  },
+  "id": "83Sgpfxt9Ez5T256",
+  "tags": []
+}
