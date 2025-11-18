@@ -37,32 +37,7 @@
     },
     {
       "parameters": {
-        "operation": "download",
-        "fileId": {
-          "__rl": true,
-          "mode": "id",
-          "value": ""
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3,
-      "position": [
-        176,
-        96
-      ],
-      "id": "4af0f5e2-6c91-4b3d-82b7-91bf6164bf0c",
-      "name": "Download file",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "usnw2QKEuJHcLOsd",
-          "name": "Google Drive account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "url": "={{ $json.webViewLink }}",
+        "url": "=https://www.googleapis.com/drive/v3/files?q=\"{{ $json.id }}\"+in+parents&fields=files(id,name,mimeType,modifiedTime,size)",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googleDriveOAuth2Api",
         "options": {}
@@ -84,16 +59,69 @@
     },
     {
       "parameters": {
+        "fieldToSplitOut": "files",
         "options": {}
       },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
       "position": [
         -144,
         80
       ],
-      "id": "6ef6ce3c-1ee0-4aa5-abb9-054092c618e9",
-      "name": "loop_over_folder_items"
+      "id": "56fdd8df-bd89-49bc-a0ea-fbdc6206b7b6",
+      "name": "split_out_files"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        96,
+        80
+      ],
+      "id": "4af0f5e2-6c91-4b3d-82b7-91bf6164bf0c",
+      "name": "download_files",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "usnw2QKEuJHcLOsd",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        352,
+        80
+      ],
+      "id": "94560b8d-c51f-4881-b08f-929edd22bb56",
+      "name": "extract_text_from_md"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        80
+      ],
+      "id": "a6720066-afc6-42bf-b185-56a32149bcc4",
+      "name": "Information Extractor"
     }
   ],
   "pinData": {},
@@ -113,28 +141,38 @@
       "main": [
         [
           {
-            "node": "loop_over_folder_items",
+            "node": "split_out_files",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Download file": {
+    "split_out_files": {
       "main": [
-        []
-      ]
-    },
-    "loop_over_folder_items": {
-      "main": [
-        [],
         [
           {
-            "node": "Download file",
+            "node": "download_files",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "download_files": {
+      "main": [
+        [
+          {
+            "node": "extract_text_from_md",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extract_text_from_md": {
+      "main": [
+        []
       ]
     }
   },
@@ -142,7 +180,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "dec4d233-d306-4aa3-a1e0-24c6a1645999",
+  "versionId": "2387f262-bb37-4379-a8f2-50a46920c12d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "bf925e81b6a563ad56f79364300c97c41c841ac4da95716caaf16899c5cc0436"
