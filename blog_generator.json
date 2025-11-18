@@ -13,10 +13,10 @@
         "triggerOn": "specificFolder",
         "folderToWatch": {
           "__rl": true,
-          "value": "xxxxxxx",
+          "value": "xxxxxxxxx",
           "mode": "list",
           "cachedResultName": "blog_generator",
-          "cachedResultUrl": "https://drive.google.com/drive/folders/xxxxxxx"
+          "cachedResultUrl": "https://drive.google.com/drive/folders/xxxxxxxxx"
         },
         "event": "folderCreated"
       },
@@ -45,7 +45,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -368,
+        -416,
         80
       ],
       "id": "001d9af1-ea7c-4b4b-be9a-cfc8fc917d9e",
@@ -65,7 +65,7 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -144,
+        -240,
         80
       ],
       "id": "56fdd8df-bd89-49bc-a0ea-fbdc6206b7b6",
@@ -84,7 +84,7 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        96,
+        -48,
         80
       ],
       "id": "4af0f5e2-6c91-4b3d-82b7-91bf6164bf0c",
@@ -104,7 +104,7 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        352,
+        176,
         80
       ],
       "id": "94560b8d-c51f-4881-b08f-929edd22bb56",
@@ -112,19 +112,103 @@
     },
     {
       "parameters": {
-        "options": {}
+        "promptType": "define",
+        "text": "=You are a text sanitization model. Your task is to remove all personal, private, or sensitive information (PII) from the text below without changing the meaning.     Do NOT create new text. Keep all non-PII content intact.    Remove:    - Names    - Emails  - Phone numbers  - Addresses - Exact locations        - Passport/ID numbers  - Company employee identifiers  - Birthdates or ages  - Financial numbers  - Keys -Codes   Return only the sanitized text.    Text to sanitize:  {{ $json.data }}",
+        "batching": {
+          "batchSize": 5
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
-      "typeVersion": 1.2,
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
       "position": [
-        608,
+        944,
         80
       ],
-      "id": "a6720066-afc6-42bf-b185-56a32149bcc4",
-      "name": "Information Extractor"
+      "id": "4996bbe6-5721-4887-9ca1-b53c515690a5",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor item_index, item in enumerate(_input.all()):\n  item_string = item.json.data[0]\n  # string_array = [\n  #    {f'chunk_{item_index}_{i//200}': item_string[i:i+200]} for i in range(0, len(item_string), 200)\n  # ]\n  string_array = [\n     { 'data' : item_string[i:i+200]} for i in range(0, len(item_string), 200)\n  ]\n\nreturn string_array\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        80
+      ],
+      "id": "3870f364-a79c-4909-98ca-ec6e3fedd94f",
+      "name": "chunk_text_for_local_llm"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        400,
+        80
+      ],
+      "id": "765c767e-b006-4693-9253-3d450b507b2d",
+      "name": "aggregate_files_to_one"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        80
+      ],
+      "id": "a54238d5-7a77-4d59-98aa-7db4e3fb5c9b",
+      "name": "aggregrate_sanitised_text"
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        944,
+        288
+      ],
+      "id": "822a9784-a4f8-4e63-975d-5a4259c886d6",
+      "name": "Local Ollama Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "prD0iGiqEbpNYK3H",
+          "name": "Ollama account"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "aggregate_files_to_one": [
+      {
+        "json": {
+          "data": [
+            "### Integrating the Backend and Fronted\r\n\r\n#### Making Requests from the frontend -Planning\r\n##### Pre - Requirement.\r\n- Some backend Endpoints available.\r\n- The frontend half function.\r\n\r\n1. Start the backend and Frontend Server.\r\n    Backend : ``` node index.js ```\r\n    Frontend : ```npm run dev ``` \r\n\r\n2. Need To double check can make request to the backend server from the frontend.\r\n\r\n3. Implement the token/validations for protecting the APIs.\r\n\r\n\r\n#### 03/08/2024  Need To double check can make request to the backend server from the frontend.\r\n- In a file called __apiClient.js__ make fetch requests and the reponse will be used in the frontend components.\r\n- However for react components to access the data from requests and response, you need an additional package called __react-query__  \r\n\r\n __DOCS__ : https://auth0.com/docs/get-started/apis/api-settings \r\n1. Create an api application in AUTH0, with signing RSA.\r\n  _This is different to the single page application (SPA) created for react._\r\n\r\n2. Create the modules you will need with fronted React App , to send JWT coming from the Client side., and it will be verified in the backend API. \r\n  - axios (i think fetch can be fine for this).\r\n  - Add the autho module 'getAccessTokenSilently' (test to first).\r\n  - In AuthO provider, that wraps the react app, need to add _audience_ and _scope_ parameter, SO the JWT token can be relevant.\r\n   https://auth0.com/docs/get-started/apis/scopes/sample-use-cases-scopes-and-claims \r\n\r\n3. Need to create a middleware in the express app to verity the token (double check if others already exists). The modules that would be required for this are :\r\n    - _express-jwt_ : To extract the JWT sent by the client side authomaticaly.\r\n    - _jwks-rsa_ : Creates the secret for the JWT token ?\r\n    - Axios to get user detail: replaced with ??\r\n    - create the middleware : const verifyjwt = uses express-jwt and method _.unless()_\r\n    - set it to be used by the app via: app.use(verifyjwt)\r\n    - Can add an error-handler as a middleware -?? confuesd but to prevent the application from crashing.\r\n    - Note: The user information in _req.user_, might need to get the access token from the request first, and the \r\n\r\n#### 18/08/2024\r\n - For Frontend:  useEffect code on each components : https://github.com/auth0/auth0-react/blob/main/EXAMPLES.md\r\n\r\n- For Backend:   https://auth0.com/docs/quickstart/backend/nodejs \r\n   ``` npm i express-oauth2-jwt-bearer ```\r\n   2. Then in index.js [Docs Ref](https://auth0.github.io/node-oauth2-jwt-bearer/functions/auth.html)\r\n   ```\r\n      import { auth } from 'express-oauth2-jwt-bearer';\r\n      const jwtcheck = auth({\r\n        auth: process.env.AUTH_AUDIENCE,\r\n        issuerBaseURL: process.env.AUTH_BASE_URL,\r\n        tokenSigningAlg: 'RS256'\r\n      });\r\n      app.use(jwtcheck); // for checking token authorizations\r\n   ```\r\n\r\n### 19/08/2024\r\n- Trying to send token to the backend and currently timing out.\r\n _The issue was that my scope at APP level was not matching that in the components making requests_\r\n- On Backend getting Unauthorized and message \r\n  ``` \r\n  Access to fetch at 'http://localhost:3000/api/postcode' from origin 'http://localhost:5173' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.\r\n  ```\r\n \r\n### Lessons \r\n1. React-Query:  [a JavaScript library designed to simplify the complex task of data fetching and caching in React applications. It offers a set of hooks and utilities that enable you to manage data from various sources, including REST APIs, GraphQL, or even local state, effortlessly](https://medium.com/bina-nusantara-it-division/understanding-react-query-11e56960e90c#:~:text=React%20Query%20is%20a%20JavaScript,or%20even%20local%20state%2C%20effortlessly.)\r\n - In node package manager : https://www.npmjs.com/package/react-query \r\n - Its actual documentation : https://tanstack.com/query/latest/docs/framework/react/overview \r\n\r\n2. ~~Decising where to call _gettokensilently_ either in the component or page items. Not really sure, so going component, do that each gets it own for it request, reducing the likelihood of expiry if different components use the same for the page. And if some components do not require them to use it on the page that is fine.~~ Wrong (to many unnecessary request will be generated)rather than that, just create a post request to your application directly to get a token, which will then be used for request. Now you need to consider how you will check/manage reusing the token.\r\n\r\n __Correction__: Based on more research.\r\n  1. Learning what the 0auth-react SDK is actually doing under the hood with the youtube tutorials: https://www.youtube.com/watch?v=dyZmsz6usWk&ab_channel=AmbientCoder \r\n  2. Going into the docs for the actual sdk instead of just native usage. https://auth0.com/docs/libraries/auth0-react \r\n  and the GITHUB repo to the example which is very helpful for you.  https://github.com/auth0/auth0-react/blob/main/examples/cra-react-router/src/use-api.ts\r\n   \r\n\r\n - Check react options ",
+            "### Frontend: VITE and JoyUI\r\n\r\n1. Install vite template \r\n    ``` npm create vite@latest navland_frontend ```\r\n    ✔ Select a framework: › React\r\n    ✔ Select a variant: › JavaScript + SWC\r\n    \r\n    Done. Now run:\r\n        cd navland_frontend\r\n        npm install\r\n        npm run dev\r\n    \r\n    - Delete _App.css_ and _index.css_ files which will not be required.\r\n\r\n2. Other dependencies to install for using Material UI, JoyUI and AUTH0 \r\n    ``` npm install @auth0/auth0-react @mui/material @emotion/react @emotion/styled @mui/icons-material @mui/joy react-router-dom``\r\n    \r\n3. Add .env file for AuthO connection information.\r\n\r\n4. In _main.jsx_ wrap the App in the Auth0Provider component.\r\n\r\n5. In Auth0 change disrption \r\n    ```  \"pageTitle\": \"Log in | ${clientName}\",\r\n        \"description\": \"Log in to ${companyName} to continue to ${clientName}.\",\r\n    ```\r\n    and \r\n    ``` \r\n         \"description\": \"Sign Up to ${companyName} to continue to ${clientName}.\",\r\n    ``` \r\n\r\n6. TEST LOGIN WITH \r\n    damolaadeleke@hotmail.co.uk\r\n    PASSWORD: 4UY6ypZCa4EtUv8!\r\n    \r\n    - The user data looks like \r\n        ``` sub: \"auth0|669822a15a5d5c34245fc2b3\" ```\r\n\r\n7. Add log out functionality : Create the logout component.\r\n \r\n#### 27/07/2024\r\n8. Add Dashboard\r\n   And to allow the redirect to work probably need a comma seperated : http://localhost:5173, http://localhost:5173/home\r\n   in the callback_url is the application setting in Auth \r\n\r\n#### 28/07/2024\r\n9. For data management: install react-query: ``` npm i react-query ```\r\n    - Need to wrap the app with its provides :https://tanstack.com/query/latest/docs/framework/react/overview\r\n    - Query Request to API works. \r\n\r\n#### 03/08/2024 \r\n10.  Send Authentication detail to backend \r\n    and Need to add token to protect the ApI.\r\n\r\n####  04/08/2024\r\n __Correction__: Based on more research.\r\n  1. Learning what the 0auth-react SDK is actually doing under the hood with the youtube tutorials: https://www.youtube.com/watch?v=dyZmsz6usWk&ab_channel=AmbientCoder \r\n  2. Going into the docs for the actual sdk instead of just native usage. https://auth0.com/docs/libraries/auth0-react \r\n  and the GITHUB repo to the example which is very helpful for you.  https://github.com/auth0/auth0-react/blob/main/examples/cra-react-router/src/use-api.ts\r\n   \r\n#### 18/08/2024\r\n\r\nTODO \r\n    1. ~~Add log out functionality~~\r\n    2. Send Authentication detail to backend\r\n    3.~~ Add Dashboard~~\r\n    4. Components/OrdersTable.jsx needs to get from API\r\n    5. Components/OrdersList.jsx needs to get from API\r\n    6. ~~Add dashboard redirect on log in~~\r\n    7. Need to add token to protect the ApI \r\n\r\n\r\nsize=\"small\"\r\ncomponent=\"a\" \r\ncolor=\"secondary\"\r\n### auth APP CODE\r\nTVRT71642QP6TRNUAAV1KWET\r\n\r\n### Helpful resource \r\nhttps://www.youtube.com/watch?v=GGGjnBkN8xk&ab_channel=MafiaCodes \r\n\r\nhttps://auth0.github.io/auth0-react/functions/useAuth0.html \r\n\r\nhttps://auth0.com/docs/quickstart/spa/react/02-calling-an-api",
+            "### Backend: Express, Mongo DB and \r\n\r\n- Backend Tools \r\n    ``` npm install express cookie-parser mongoose cors dotenv ```\r\n\r\n- Tets \r\nhttps://github.com/Joao-Henrique/React_Express_App_Medium_Tutorial/blob/master/client/src/index.css \r\n\r\n#### Testing the Backend API \r\n- Run the index.js file to run the backend server.\r\n    ``` node index.js ```\r\n\r\n- Four endpoints added to the backend, and tested in postcode.\r\n    ``` \r\n        router.get(\"/\", postcodeDocument);\r\n        router.get(\"/localauthority\", localAuthorityDocument);\r\n        router.get(\"/ward\", wardDocument);\r\n        router.get(\"/city\", cityDocument);\r\n    \r\n    ```\r\n\r\n#### Adding Security To API has part of 03/08/2024\r\n __DOCS__ : https://auth0.com/docs/get-started/apis/api-settings \r\n1. Create an api application in AUTH0, with signing RSA.\r\n  _This is different to the single page application (SPA) created for react._\r\n\r\n2. Create the modules you will need with fronted React App , to send JWT coming from the Client side., and it will be verified in the backend API. \r\n  - axios (i think fetch can be fine for this).\r\n  - Add the autho module 'getAccessTokenSilently' (test to first).\r\n  - In AuthO provider, that wraps the react app, need to add _audience_ and _scope_ parameter, SO the JWT token can be relevant.\r\n   https://auth0.com/docs/get-started/apis/scopes/sample-use-cases-scopes-and-claims \r\n\r\n3. Need to create a middleware in the express app to verity the token (double check if others already exists). The modules that would be required for this are :\r\n    - _express-jwt_ : To extract the JWT sent by the client side authomaticaly.\r\n    - _jwks-rsa_ : Creates the secret for the JWT token ?\r\n    - Axios to get user detail: replaced with ??\r\n    - create the middleware : const verifyjwt = uses express-jwt and method _.unless()_\r\n    - set it to be used by the app via: app.use(verifyjwt)\r\n    - Can add an error-handler as a middleware -?? confuesd but to prevent the application from crashing.\r\n    - Note: The user information in _req.user_, might need to get the access token from the request first, and the \r\n    \r\n#### Learning Errors \r\n1. The IP address whitelist\r\n  MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/"
+          ]
+        }
+      }
+    ]
+  },
   "connections": {
     "Google Drive Trigger": {
       "main": [
@@ -172,7 +256,57 @@
     },
     "extract_text_from_md": {
       "main": [
-        []
+        [
+          {
+            "node": "aggregate_files_to_one",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "aggregrate_sanitised_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chunk_text_for_local_llm": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "aggregate_files_to_one": {
+      "main": [
+        [
+          {
+            "node": "chunk_text_for_local_llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Local Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -180,7 +314,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "2387f262-bb37-4379-a8f2-50a46920c12d",
+  "versionId": "711cdd84-8aef-456c-914d-841fd339cd03",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "bf925e81b6a563ad56f79364300c97c41c841ac4da95716caaf16899c5cc0436"
