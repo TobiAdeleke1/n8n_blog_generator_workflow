@@ -1,0 +1,21 @@
+services:
+  ollama:
+    build: .
+    container_name: ollama
+    ports:
+      - 11434:11434
+    networks:
+      - ai-blog-net
+    environment:
+      - OLLAMA_MODEL=llama3.1 # default model, change to desired available ollama model
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: always
+
+networks:
+  ai-blog-net:
+    external: true
+    name: ai-blog-net
+
+volumes:
+  ollama_data:
