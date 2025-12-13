@@ -12,10 +12,23 @@
 - Google drive trigger
 - HTTP request
 - Split out
-- Google drive download file
-- Extract from text file
+- Google drive download files
+- Extract from text files
 - Aggregate
 - Python custom script
 - Basic LLM chain connected to a locally hosted Ollama model
-
+- Spreadsheet to locally sanitised text
+- AI agent using Google gemini chat model to generate blog topics
+  - Output json indicator 
+    ```JSON
+        {
+            "blog_idea": "",
+            "keywords": [],
+            "search_intent": "",
+            "justification_summary": "",
+            "strength_of_idea": ""
+        }           
+    ```
+- Json parser 
+- Another Spreadsheet to store initial blog topics.
 
