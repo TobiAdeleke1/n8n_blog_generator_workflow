@@ -11,7 +11,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -784,
+        -864,
         -16
       ],
       "id": "88696e34-79e9-4a20-a2c2-2ea4dee7d0cd",
@@ -31,7 +31,7 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -560,
+        -640,
         -16
       ],
       "id": "77eb6875-b67d-4286-b8c2-a1b70c764b6f",
@@ -50,7 +50,7 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -96,
+        -192,
         -16
       ],
       "id": "801760a4-6b7f-49d2-9cfd-5e00c1ff0724",
@@ -70,7 +70,7 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        128,
+        32,
         -16
       ],
       "id": "de4106c4-af3b-4734-b90b-ce8397849925",
@@ -87,7 +87,7 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
       "position": [
-        816,
+        704,
         -16
       ],
       "id": "cd3d316c-d00a-4dc4-b662-0c450df1dcb0",
@@ -101,7 +101,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        592,
+        480,
         -16
       ],
       "id": "1aaeabfb-b873-456c-9cfd-86d3f9d57d57",
@@ -121,7 +121,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        352,
+        256,
         -16
       ],
       "id": "1b37be83-95a6-4c75-9874-737e8d010590",
@@ -143,8 +143,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -960,
-        464
+        -1056,
+        448
       ],
       "id": "50a1dbad-e2fa-4941-a32e-ea5e412f7cba",
       "name": "aggregrate_sanitised_text"
@@ -157,8 +157,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmOllama",
       "typeVersion": 1,
       "position": [
-        896,
-        224
+        776,
+        208
       ],
       "id": "37ab76b0-52f0-4e3b-b2ce-8d8559fb68e1",
       "name": "Local Ollama Model",
@@ -197,7 +197,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -368,
+        -416,
         -16
       ],
       "id": "d5874210-fb40-4a41-ab0e-98fccaa657b3",
@@ -223,7 +223,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1200,
+        1056,
         -16
       ],
       "id": "976a1334-7d7d-4f0b-b017-c9595885e598",
@@ -254,7 +254,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1456,
+        1280,
         -16
       ],
       "id": "1bae9187-c87b-402d-9bab-43b7129d52fe",
@@ -280,19 +280,20 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Text": "={{ $json.sanitized_text }}",
-            "pii_found": "={{ $json.pii_found }}"
+            "pii_found": "={{ $json.pii_found }}",
+            "sanitized_text": "={{ $json.sanitized_text }}"
           },
           "matchingColumns": [],
           "schema": [
             {
-              "id": "Text",
-              "displayName": "Text",
+              "id": "sanitized_text",
+              "displayName": "sanitized_text",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "pii_found",
@@ -312,7 +313,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1744,
+        1504,
         -16
       ],
       "id": "089bf424-3531-44b3-8a27-ec6cc165b467",
@@ -331,8 +332,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -720,
-        688
+        -768,
+        672
       ],
       "id": "b328ed7d-29af-49fa-aaeb-1a2397567547",
       "name": "Google Gemini Chat Model",
@@ -360,8 +361,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -304,
-        464
+        -480,
+        448
       ],
       "id": "38e7a75f-ef00-42b2-95d3-738d20e22c07",
       "name": "get_json"
@@ -374,8 +375,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -80,
-        464
+        -256,
+        448
       ],
       "id": "d08b7565-ba73-416d-b36c-5763a9d0d611",
       "name": "split_out_json_items"
@@ -484,8 +485,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        128,
-        368
+        -32,
+        448
       ],
       "id": "1a741864-4f86-4c09-a6e9-06bf6604d3a0",
       "name": "store_initial_blog_ideas",
@@ -508,17 +509,17 @@
         "triggerOn": "specificFolder",
         "folderToWatch": {
           "__rl": true,
-          "value": "yyyyyyyyyyyyyy",
+          "value": "xxxxxxxxx",
           "mode": "list",
           "cachedResultName": "blog_generator",
-          "cachedResultUrl": "https://drive.google.com/drive/folders/yyyyyyyyyyyyyy"
+          "cachedResultUrl": "https://drive.google.com/drive/folders/xxxxxxxxx"
         },
         "event": "folderCreated"
       },
       "type": "n8n-nodes-base.googleDriveTrigger",
       "typeVersion": 1,
       "position": [
-        -1008,
+        -1088,
         -16
       ],
       "id": "f6575563-92de-4d17-8cb7-a2492932f563",
@@ -529,9 +530,184 @@
           "name": "Google Drive account"
         }
       }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        256,
+        672
+      ],
+      "id": "1f366465-6bb6-47b9-b397-30365e3769e1",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "XlaAN3k1rOsPec1V",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c55188f-db26-4a38-924c-ce4fd3a5298e",
+              "name": "output",
+              "value": "={{ $json.output.replaceAll('```json','').replaceAll('```', '')}}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        448
+      ],
+      "id": "63df369b-e332-458d-93da-62f344bd7a90",
+      "name": "get_json1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=### Input Documentation Text\n{{ $('aggregrate_sanitised_text').all()[0].json.sanitised_data }}\n\n### Input blog Ideas to Evaluate:\n{\n  \"blog_idea\": {{ $json.blog_idea }},\n  \"keywords\": {{ $json.keywords }},\n  \"search_intent\": {{ $json.search_intent }},\n  \"justification_summary\": {{ $json.justification_summary }},\n  \"strength_of_idea\": {{ $json.strength_of_idea }},\n}\n\n### Task\nEvaluate how good this blog idea is based ONLY on the knowledge in documentation text above.\n\n### Consider the following:\n- Relevance: Using the context of  the Input Documentation Text document, Is it clearly supported by data?\n- Level: Is it appropriate for beginners → intermediate users?\n- SEO: Is the title clear, keyword-targeted, and high-click-through?\n\n### Output Format\nReturn a single JSON object with the SAME FIELDS plus two new fields:\n\n{\n  \"blog_idea\": \"\",\n  \"keywords\": [],\n  \"search_intent\": \"\",\n  \"justification_summary\": \"\",\n  \"strength_of_idea\": \"\",\n  \"review_score\": 0,\n  \"review_comment\": \"\"\n}\n\n### Rules\n- Do NOT change or rewrite any existing fields.\n- ONLY add \"review_score\" (0–100) and \"review_comment\" (1–2 sentences).\n- Review comment must briefly justify the score based on the Input Documentation Text context only.\n- Use only the documentation text as context.\n- Output valid JSON only — no extra text or explanations.\n",
+        "options": {
+          "systemMessage": "You are a Blog Idea Evaluation Assistant.\n\nYour job is to evaluate a proposed blog idea against:\n- how well it is supported by the original documentation text,\n- how suitable it is for beginner-to-intermediate readers,\n- and how strong the SEO potential of the title is.\n\nYou do not change any existing fields.  \nYou only add two new fields:\n- \"review_score\": an integer from 0 to 100\n- \"review_comment\": a short explanation (1–2 sentences)\n\nScore meanings:\n- 0–39 = weak (poorly supported, unclear for beginners, or weak SEO)\n- 40–69 = okay (reasonably supported but could be clearer or stronger)\n- 70–100 = strong (well supported, beginner-friendly, strong SEO potential)\n\nReturn valid JSON only.\n",
+          "batching": {
+            "delayBetweenBatches": 20000
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        192,
+        448
+      ],
+      "id": "d42a8428-41d0-41a0-82f6-d163f7e28679",
+      "name": "blog_idea_evaluator"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "xxxxxxxxx",
+          "mode": "list",
+          "cachedResultName": "Sanitised Text",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/xxxxxxxxx/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2013481976,
+          "mode": "list",
+          "cachedResultName": "evaluated_generated_ideas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/xxxxxxxxx/edit#gid=2013481976"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "blog_idea": "={{ $json.output.blog_idea }}",
+            "keywords": "={{ $json.output.keywords }}",
+            "search_intent": "={{ $json.output.search_intent }}",
+            "justification_summary": "={{ $json.output.justification_summary }}",
+            "strength_of_idea": "={{ $json.output.strength_of_idea }}",
+            "review_score": "={{ $json.output.review_score }}",
+            "review_comment": "={{ $json.output.review_comment }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "blog_idea",
+              "displayName": "blog_idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "keywords",
+              "displayName": "keywords",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "search_intent",
+              "displayName": "search_intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "justification_summary",
+              "displayName": "justification_summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "strength_of_idea",
+              "displayName": "strength_of_idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "review_score",
+              "displayName": "review_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "review_comment",
+              "displayName": "review_comment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        448
+      ],
+      "id": "7d87ee11-109a-4fef-915b-e8070e726ef9",
+      "name": "store_evaluated_blog_idea",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "okN9QvxLBNe3exCA",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
-  "pinData": {},
   "connections": {
     "list_files_in_folder": {
       "main": [
@@ -661,18 +837,19 @@
             "node": "store_santised_text",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "aggregrate_sanitised_text",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
     },
     "store_santised_text": {
       "main": [
-        []
+        [
+          {
+            "node": "aggregrate_sanitised_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Google Gemini Chat Model": {
@@ -729,13 +906,57 @@
           }
         ]
       ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "blog_idea_evaluator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_json1": {
+      "main": [
+        [
+          {
+            "node": "store_evaluated_blog_idea",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "blog_idea_evaluator": {
+      "main": [
+        [
+          {
+            "node": "get_json1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "store_initial_blog_ideas": {
+      "main": [
+        [
+          {
+            "node": "blog_idea_evaluator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "0ae03f78-59cf-4672-b7f5-672551ef177b",
+  "versionId": "d95deb61-f986-42eb-b64b-cc2cb9a82e70",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "bf925e81b6a563ad56f79364300c97c41c841ac4da95716caaf16899c5cc0436"
